@@ -1,0 +1,14 @@
+calplot
+datetime
+folium
+ipython
+itables
+jupyter-book
+logging
+matplotlib
+numpy
+pandas
+plotly
+pyarrow
+seaborn
+darts

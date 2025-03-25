@@ -15,13 +15,15 @@ jobs:
       with:
         python-version: '3.13.2'
         architecture: 'x64'
+    - name: Install numpy
+      run: pip install numpy
     - name: Install library and other requirements
       run: |
         pip install jupyter nbconvert
         pip install -r requirements.txt 
     - name: Run Notebooks
       env:
-        GH_TOKEN:  ${{ secrets.GH_TOKEN }}
+        GH_TOKEN: ${{ secrets.GH_TOKEN }}
       run: |
         wget -q https://nvd.handsonhacking.org/nvd.jsonl 
         jupyter nbconvert --ExecutePreprocessor.timeout=-1 --to notebook --inplace --execute Kalman_2025.ipynb

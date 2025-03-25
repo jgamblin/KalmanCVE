@@ -1,4 +1,5 @@
 calplot
+darts
 datetime
 folium
 ipython
@@ -11,4 +12,3 @@ pandas
 plotly
 pyarrow
 seaborn
-darts

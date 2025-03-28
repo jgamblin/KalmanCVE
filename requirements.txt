@@ -1,7 +1,5 @@
-pandas
-numpy
-matplotlib
 darts
-plotly
-jupyter
+matplotlib
+numpy
+pandas
 statsforecast

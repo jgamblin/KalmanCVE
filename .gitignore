@@ -163,3 +163,6 @@ jsondata/
 *.zip
 *.json
 nvd.jsonl
+
+# Claude
+.claude/

@@ -1,48 +1,78 @@
 # KalmanCVE
 
-KalmanCVE is a reproducible, data-driven project for forecasting Common Vulnerabilities and Exposures (CVE) counts using the Kalman Filter and time series analysis. The project leverages the [Darts](https://unit8co.github.io/darts/) time series library and public data from the [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/data-feeds).
+KalmanCVE forecasts Common Vulnerabilities and Exposures (CVE) counts using the Kalman Filter and time series analysis. It uses the [Darts](https://unit8co.github.io/darts/) library and public data from the [National Vulnerability Database (NVD)](https://nvd.nist.gov/vuln/data-feeds).
 
-## Project Overview
-- **Goal:** Provide transparent, robust, and regularly updated forecasts of CVE counts for recent and upcoming years (2023, 2024, 2025).
-- **Approach:** Each year has a dedicated Jupyter notebook that loads, cleans, and aggregates NVD data, fits a Kalman Filter model, and generates monthly forecasts. Diagnostics and validation steps are included for transparency.
-- **Data Source:** NVD JSONL export (see [NVD Data Feeds](https://nvd.nist.gov/vuln/data-feeds)).
-- **Forecasting Library:** [Darts](https://unit8co.github.io/darts/)
-- **Visualization:** Matplotlib, pandas, and Darts built-in plotting.
+## Overview
 
-## Notebooks
-- `Kalman_2023.ipynb`: Forecasts and validates CVE counts for 2023.
-- `Kalman_2024.ipynb`: Forecasts and validates CVE counts for 2024.
-- `Kalman_2025.ipynb`: Forecasts and validates CVE counts for 2025. **This notebook updates every 6 hours.**
+- **Goal:** Provide transparent, robust, and regularly updated forecasts of CVE counts.
+- **Data Source:** NVD JSONL export (public domain, provided by NIST).
+- **Model:** Kalman Filter via Darts `KalmanForecaster`.
+- **Automation:** GitHub Actions runs the forecast every 6 hours and commits the updated plot.
 
-Each notebook includes:
-- Data loading and validation
-- Aggregation and exploratory analysis
-- Model fitting and forecasting
-- Diagnostics and visualizations
-- Validation against actuals (where available)
+## Installation
+
+```bash
+pip install .
+```
+
+For development:
+
+```bash
+pip install -e ".[dev]"
+```
 
 ## Usage
-1. **Install dependencies:**
-   ```bash
-   pip install -r requirements.txt
-   ```
-2. **Download the latest NVD data:**
-   - Place the `nvd.jsonl` file in the project root directory.
-3. **Open a notebook:**
-   - Use JupyterLab, VS Code, or another compatible environment.
-   - Run all cells in the desired notebook (e.g., `Kalman_2025.ipynb`).
 
-## File Descriptions
-- `Kalman_2023.ipynb`, `Kalman_2024.ipynb`, `Kalman_2025.ipynb`: Main forecasting notebooks for each year.
-- `nvd.jsonl`: NVD data export (required for analysis).
-- `requirements.txt`: Python dependencies.
-- `forecast_plot.png`: Example output plot (optional).
-- `LICENSE`: Project license (NIST data is public domain).
+```bash
+# Download NVD data and run forecast for the current year
+kalmancve
 
-## Notes
-- The 2025 notebook is scheduled to update every 6 hours to reflect the latest available data.
-- All code is designed for reproducibility and transparency. See notebook markdown cells for detailed explanations.
+# Use a local data file
+kalmancve --data-file nvd.jsonl
+
+# Forecast a specific year with verbose output
+kalmancve --year 2025 --verbose
+
+# Save validation table as CSV
+kalmancve --data-file nvd.jsonl --output-csv results.csv
+
+# Skip plot generation
+kalmancve --data-file nvd.jsonl --no-plot
+```
+
+### Options
+
+```
+--year INTEGER          Forecast year (default: current year)
+--start-date TEXT       Training data start date (default: 2017-01-01)
+--dim-x INTEGER         Kalman filter state dimension (default: 2)
+--num-samples INTEGER   Monte Carlo samples (default: 1000)
+--data-url TEXT         NVD JSONL URL
+--data-file PATH        Use local file (skip download)
+--output-plot PATH      Plot output path (default: forecast_plot.png)
+--output-csv PATH       Save validation table as CSV
+--no-plot               Skip plot generation
+--verbose               Enable verbose output
+--version               Show version
+```
+
+## Output
+
+The tool prints a validation table comparing predicted vs actual CVE counts by month, and generates a forecast plot (`forecast_plot.png`).
+
+## Testing
+
+```bash
+pytest
+```
+
+## Files
+
+- `src/kalmancve/` — Python package with CLI, data loading, forecasting, reporting, and plotting modules.
+- `notebooks/` — Archive of original Jupyter notebooks (2023, 2024, 2025).
+- `forecast_plot.png` — Latest forecast visualization (updated every 6 hours by CI).
 
 ## License
+
 - NVD data is provided by NIST and is in the public domain. See: https://www.nist.gov/open/license
-- Project code is licensed under the terms in `LICENSE`.
+- Project code is licensed under the terms in `LICENSE` (Apache 2.0).

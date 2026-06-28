@@ -14,10 +14,10 @@ authors = [
 ]
 dependencies = [
     "click>=8.1",
-    "darts>=0.28.0",
+    "darts>=0.28.0,<0.41.0",
     "matplotlib>=3.8.0",
-    "numpy>=1.26.0",
-    "pandas>=2.1.0",
+    "numpy>=1.26.0,<2.1",
+    "pandas>=2.1.0,<3.0",
 ]
 
 [project.scripts]

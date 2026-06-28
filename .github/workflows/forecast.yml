@@ -19,7 +19,7 @@ jobs:
           python-version: "3.13"
 
       - name: Install kalmancve
-        run: pip install .
+        run: pip install --upgrade pip setuptools wheel && pip install --no-cache-dir .
 
       - name: Run forecast
         run: kalmancve --verbose
